@@ -313,15 +313,14 @@
       ]
     };
 
-    if (location.hash.startsWith("#party=")) {
-  try {
-    const rawHash = decodeURIComponent(location.hash.slice(7));
-    const parsed = JSON.parse(decodeURIComponent(escape(atob(rawHash))));
-    Object.assign(state, parsed);
-  } catch (err) {
-    console.error("Invalid party hash:", err);
-  }
-}
+  if (location.hash.startsWith("#party=")) {
+      try {
+        const rawHash = decodeURIComponent(location.hash.slice(7));
+        const parsed = JSON.parse(decodeURIComponent(escape(atob(rawHash))));
+        Object.assign(giftData, parsed);
+      } catch (err) {
+        console.error("Invalid party hash:", err);
+      }
 
     let screen = 0;
     let letterOpen = false;

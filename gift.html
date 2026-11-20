@@ -367,8 +367,10 @@
         .map((_, idx) => `<div class="capsule ${idx === clawIndex ? "selected" : ""}">${CAPSULE_ICONS[idx % CAPSULE_ICONS.length]}</div>`)
         .join("");
 
-      const positions = ["18%", "39%", "61%", "82%"];
-      document.getElementById("clawArm").style.left = positions[clawIndex] || "50%";
+      const leftPct = loves.length > 1
+        ? 14 + (clawIndex / (loves.length - 1)) * 72
+        : 50;
+      document.getElementById("clawArm").style.left = `${leftPct}%`;
     }
 
     function goScreen(idx) {

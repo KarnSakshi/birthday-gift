@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Birthday Gift For You</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #2b1d28;
+      --muted: #7a6874;
+      --rose: #d9264e;
+      --pink-env: #f39ab6;
+      --pink-env-dark: #e4789c;
+      --border: #eedfe4;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at center, #fce7ec 0%, #fbf2ea 75%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .serif { font-family: "Playfair Display", Georgia, serif; }
+    .hand { font-family: "Caveat", cursive; }
+
+    .mobile-shell {
+      width: 393px;
+      max-width: 100vw;
+      height: 100dvh;
+      max-height: 852px;
+      background: #fff8f5;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 24px 60px rgba(74, 28, 46, 0.14);
+    }
+
+    @media (min-width: 500px) {
+      .mobile-shell {
+        height: 780px;
+        border-radius: 40px;
+        border: 8px solid #eadfd9;
+      }
+    }
+
+    .phone-screen {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 20px 88px;
+    }
+
+    .confetti-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .confetti-dot { position: absolute; width: 9px; height: 5px; border-radius: 3px; opacity: 0.75; }
+
+    .screen-cover {
+      background: linear-gradient(180deg, #fff6ef 0%, #fde6ec 100%);
+      text-align: center;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .kicker { font-size: 0.7rem; letter-spacing: 0.16em; font-weight: 800; color: var(--rose); text-transform: uppercase; margin-top: 8px; }
+    .cover-title { font-size: 2.1rem; line-height: 1.08; margin: 6px 0 4px; }
+    .cover-title span { color: var(--rose); }
+    .cover-trait { font-size: 1.6rem; margin: 0; color: #4f3a47; }
+    .cover-trait mark { background: linear-gradient(120deg, #ffe29a 0%, #ffc2d4 100%); padding: 0 6px; border-radius: 6px; color: var(--rose); }
+    .cover-from { font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
+
+    .cake-wrap {
+      position: relative; width: 220px; height: 215px;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+      cursor: pointer; user-select: none; transition: transform 0.35s ease;
+    }
+    .candles { display: flex; gap: 14px; margin-bottom: -4px; z-index: 3; }
+    .candle { width: 8px; height: 30px; border-radius: 4px; background: repeating-linear-gradient(45deg, #fff, #fff 4px, #ff8fab 4px, #ff8fab 8px); position: relative; }
+    .flame {
+      width: 10px; height: 14px;
+      background: radial-gradient(circle at 50% 70%, #fff3b0, #ff9f1c 65%, #ff5400);
+      border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+      position: absolute; top: -15px; left: -1px;
+      animation: flicker 0.9s infinite alternate;
+    }
+    .candles.blown .flame { opacity: 0; transform: scale(0.2); transition: 0.3s; }
+    @keyframes flicker { from { transform: scale(0.95) rotate(-3deg); } to { transform: scale(1.06) rotate(3deg); } }
+
+    .cake-top { width: 136px; height: 46px; background: linear-gradient(180deg, #ffb5c8, #ff8fab); border-radius: 16px 16px 6px 6px; border-top: 7px solid #fff5f8; z-index: 2; }
+    .cake-bottom { width: 176px; height: 54px; background: linear-gradient(180deg, #d8bbff, #b892ff); border-radius: 12px 12px 10px 10px; border-top: 7px solid #f7efff; }
+    .cake-stand { width: 205px; height: 12px; background: #fff; border-radius: 999px; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08); }
+    .cake-pedestal { width: 54px; height: 22px; background: linear-gradient(180deg, #f3ece9, #fff); border-radius: 0 0 14px 14px; }
+
+    .spin-pill {
+      background: rgba(255, 255, 255, 0.92); border: 1px solid var(--border);
+      border-radius: 999px; padding: 6px 14px; font-size: 0.75rem; font-weight: 600; color: var(--muted);
+    }
+
+    .btn-pill { border: none; border-radius: 999px; padding: 13px 22px; font: inherit; font-weight: 700; cursor: pointer; }
+    .btn-rose { background: var(--rose); color: #fff; box-shadow: 0 8px 20px rgba(217, 38, 78, 0.28); }
+
+    .screen-letter { background: linear-gradient(180deg, #fbd2df 0%, #fff6f2 55%, #f9c8d8 100%); justify-content: flex-end; padding-bottom: 78px; }
+    .letter-sheet {
+      background: #fffdf9; border-radius: 22px 22px 12px 12px; padding: 20px 20px 100px;
+      box-shadow: 0 -8px 30px rgba(130, 42, 74, 0.12); border: 1px solid #f2e4e8;
+      transform: translateY(115px); transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      z-index: 2; max-height: 540px; overflow-y: auto;
+    }
+    .letter-sheet.expanded { transform: translateY(0); }
+    .letter-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .letter-body { font-size: 1.5rem; line-height: 1.38; color: var(--rose); white-space: pre-line; margin: 8px 0 14px; }
+    .letter-sign { text-align: right; font-size: 1.45rem; color: var(--rose); }
+
+    .envelope-pocket {
+      position: absolute; left: 16px; right: 16px; bottom: 72px; height: 200px;
+      background: linear-gradient(180deg, var(--pink-env) 0%, var(--pink-env-dark) 100%);
+      border-radius: 0 0 26px 26px; clip-path: polygon(0 0, 50% 34%, 100% 0, 100% 100%, 0 100%);
+      z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+      padding-bottom: 14px; cursor: pointer;
+    }
+    .wax-seal { width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #b8293d, #731120); color: #f4a4b4; display: grid; place-items: center; font-size: 1rem; margin-bottom: 24px; }
+    .pull-hint { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.12em; color: #6f1936; text-transform: uppercase; }
+
+    .screen-claw { background: linear-gradient(180deg, #e7d9f7 0%, #f9ebf2 100%); align-items: center; gap: 12px; }
+    .title-pill { background: #fff; padding: 10px 18px; border-radius: 999px; width: 100%; font-size: 1.15rem; font-weight: 800; }
+    .claw-cabinet { width: 100%; background: linear-gradient(180deg, #f8a5c2, #f38bb0); border-radius: 26px; padding: 12px; }
+    .claw-marquee { background: #b993e8; color: #fff; border-radius: 16px 16px 8px 8px; padding: 6px; text-align: center; margin-bottom: 8px; }
+    .claw-marquee span { background: #fff; color: var(--rose); font-size: 0.74rem; font-weight: 800; padding: 3px 12px; border-radius: 999px; }
+    .claw-glass { height: 255px; background: radial-gradient(circle at top, #fff7fc, #f4e6fa); border-radius: 16px; position: relative; overflow: hidden; border: 3px solid #fff; }
+    .claw-arm { position: absolute; top: 0; left: 20%; transform: translateX(-50%); transition: left 0.25s ease, top 0.35s ease; text-align: center; }
+    .claw-rod { width: 6px; height: 36px; background: #d0c4dc; margin: 0 auto; transition: height 0.35s ease; }
+    .claw-arm.dropping .claw-rod { height: 122px; }
+    .claw-head { background: #f4729b; color: #fff; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; }
+    .capsules { position: absolute; bottom: 14px; left: 12px; right: 12px; display: flex; justify-content: space-around; align-items: flex-end; }
+    .capsule { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(180deg, rgba(255,255,255,0.92) 50%, #ffb3c6 50%); border: 2px solid #fff; display: grid; place-items: center; font-size: 1.25rem; transition: transform 0.2s ease; }
+    .capsule.selected { transform: scale(1.14); outline: 3px solid var(--rose); }
+    .claw-controls { margin-top: 10px; background: #fff7fa; border-radius: 18px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .joy-btns { display: flex; gap: 8px; }
+    .joy-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: #fff; font-weight: 800; cursor: pointer; }
+    .grab-btn { width: 62px; height: 62px; border-radius: 50%; border: 4px solid #f9c5d5; background: var(--rose); color: #fff; font-weight: 800; font-size: 0.78rem; cursor: pointer; }
+    .prize-banner { background: #fff; border: 1.5px solid #f6c2d3; border-radius: 16px; padding: 10px 14px; width: 100%; text-align: center; font-size: 0.92rem; font-weight: 600; min-height: 58px; display: grid; place-items: center; }
+
+    .screen-wishes { background: linear-gradient(180deg, #fce7b2 0%, #fdf2e6 55%, #f9e1da 100%); align-items: center; text-align: center; justify-content: space-between; }
+    .jar-stage { position: relative; width: 240px; height: 270px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
+    .jar-cork { width: 78px; height: 26px; background: linear-gradient(180deg, #d8a47f, #b97d56); border-radius: 8px 8px 3px 3px; z-index: 2; }
+    .jar-ribbon { width: 96px; height: 12px; background: #c59bf0; border-radius: 999px; margin-top: -2px; z-index: 3; }
+    .jar-body {
+      width: 168px; height: 185px; margin-top: -4px; border-radius: 44px 44px 54px 54px;
+      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.9), rgba(255, 232, 179, 0.65));
+      border: 3px solid rgba(255, 255, 255, 0.92); padding: 18px 14px;
+      display: flex; flex-wrap: wrap; align-content: flex-end; justify-content: center; gap: 6px; font-size: 1.35rem;
+    }
+    .wish-card-pop { background: rgba(255, 255, 255, 0.92); border: 1px solid #f3d7b6; border-radius: 16px; padding: 12px 16px; width: 100%; }
+
+    .phone-dock {
+      position: absolute; left: 14px; right: 14px; bottom: 14px; background: #fff;
+      border-radius: 999px; padding: 6px 8px; display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 10px 26px rgba(55, 20, 35, 0.12); z-index: 10;
+    }
+    .dock-arrow { width: 34px; height: 34px; border-radius: 50%; border: none; background: #f5eff2; color: var(--ink); font-weight: 800; cursor: pointer; }
+    .dock-arrow.next { background: var(--rose); color: #fff; }
+    .dock-center { text-align: center; }
+    .dock-label { font-size: 0.72rem; font-weight: 800; display: block; }
+    .dock-dots { display: flex; gap: 4px; justify-content: center; margin-top: 3px; }
+    .dock-dot { width: 6px; height: 5px; border-radius: 999px; background: #e2cfd6; transition: all 0.2s ease; }
+    .dock-dot.active { width: 18px; background: var(--rose); }
+  </style>
+</head>
+<body>
+  <div class="mobile-shell">
+    <div class="phone-screen screen-cover" id="screen0">
+      <div class="confetti-layer" id="confetti0"></div>
+      <div>
+        <div class="kicker">A GIFT FOR YOU</div>
+        <h1 class="serif cover-title">Happy birthday,<br><span id="prevName">Sakshi</span>!</h1>
+        <p class="hand cover-trait">for being so <mark id="prevTrait">kind</mark></p>
+        <div class="cover-from" id="prevFromLine">+55 threw a little party just for you.</div>
+      </div>
+
+      <div class="cake-wrap" id="cakeWrap" onclick="spinAndBlowCake()">
+        <div class="candles" id="cakeCandles">
+          <div class="candle"><div class="flame"></div></div>
+          <div class="candle"><div class="flame"></div></div>
+          <div class="candle"><div class="flame"></div></div>
+          <div class="candle"><div class="flame"></div></div>
+        </div>
+        <div class="cake-top"></div>
+        <div class="cake-bottom"></div>
+        <div class="cake-stand"></div>
+        <div class="cake-pedestal"></div>
+      </div>
+
+      <div class="spin-pill" onclick="spinAndBlowCake()" style="cursor:pointer;">
+        ‹ › Tap cake to spin & blow candles
+      </div>
+
+      <button class="btn-pill btn-rose" type="button" style="width: 82%; padding: 14px;" onclick="goScreen(1)">
+        🎁 Open my gift
+      </button>
+    </div>
+
+    <div class="phone-screen screen-letter" id="screen1" style="display:none;">
+      <div class="confetti-layer" id="confetti1"></div>
+      <div class="letter-sheet" id="letterSheet">
+        <div class="letter-header">
+          <div>
+            <div style="font-size:0.65rem; font-weight:800; letter-spacing:0.1em; color:var(--rose);">OPEN THE ENVELOPE</div>
+            <strong class="serif" style="font-size:1.25rem;">A letter for you</strong>
+          </div>
+          <button class="dock-arrow" type="button" onclick="toggleLetter()">⌃</button>
+        </div>
+        <div class="hand" style="font-size:1.55rem; color:var(--rose);" id="prevDear">Dear Sakshi,</div>
+        <div class="hand letter-body" id="prevLetterBody"></div>
+        <div class="hand letter-sign" id="prevSign">With love, +55</div>
+      </div>
+      <div class="envelope-pocket" onclick="toggleLetter()">
+        <div class="wax-seal">♥</div>
+        <div class="pull-hint" id="pullHintText">⌃ Pull up to read</div>
+      </div>
+    </div>
+
+    <div class="phone-screen screen-claw" id="screen2" style="display:none;">
+      <div class="title-pill serif">What I love about you</div>
+      <div class="claw-cabinet">
+        <div class="claw-marquee"><span>♥ Love prizes ♥</span></div>
+        <div class="claw-glass">
+          <div class="claw-arm" id="clawArm">
+            <div class="claw-rod"></div>
+            <div class="claw-head">♥</div>
+          </div>
+          <div class="capsules" id="capsuleRow"></div>
+        </div>
+        <div class="claw-controls">
+          <div class="joy-btns">
+            <button class="joy-btn" type="button" onclick="moveClaw(-1)">◀</button>
+            <button class="joy-btn" type="button" onclick="moveClaw(1)">▶</button>
+          </div>
+          <span class="hand" style="font-size:1.1rem; color:var(--muted);">Move & press Grab</span>
+          <button class="grab-btn" type="button" onclick="grabPrize()">GRAB</button>
+        </div>
+      </div>
+      <div class="prize-banner" id="prizeBanner">
+        Move the claw over a capsule and hit <strong>GRAB</strong>!
+      </div>
+    </div>
+
+    <div class="phone-screen screen-wishes" id="screen3" style="display:none;">
+      <div>
+        <div class="kicker">MAKE A WISH</div>
+        <h2 class="serif" style="font-size:1.75rem; margin:4px 0;">Wishes for your new year</h2>
+      </div>
+      <div class="jar-stage" onclick="releaseWish()">
+        <div class="jar-cork"></div>
+        <div class="jar-ribbon"></div>
+        <div class="jar-body">
+          <span>⭐</span><span>🌟</span><span>✨</span><span>💫</span>
+          <span>⭐</span><span>✨</span><span>🌟</span><span>⭐</span>
+          <span>💫</span><span>⭐</span><span>✨</span><span>🌟</span>
+        </div>
+      </div>
+      <div class="wish-card-pop">
+        <p class="hand" id="wishDisplay" style="font-size:1.45rem; color:var(--rose); margin:0;">
+          Your wishes will rise from this jar.
+        </p>
+      </div>
+      <button class="btn-pill btn-rose" type="button" onclick="releaseWish()">✨ Release a star wish</button>
+    </div>
+
+    <div class="phone-dock">
+      <button class="dock-arrow" type="button" onclick="stepScreen(-1)">‹</button>
+      <div class="dock-center">
+        <span class="dock-label" id="dockLabel">Birthday cover</span>
+        <div class="dock-dots">
+          <span class="dock-dot active" data-dot="0"></span>
+          <span class="dock-dot" data-dot="1"></span>
+          <span class="dock-dot" data-dot="2"></span>
+          <span class="dock-dot" data-dot="3"></span>
+        </div>
+      </div>
+      <span style="font-size:0.75rem; font-weight:700; color:var(--muted);" id="dockCount">1/4</span>
+      <button class="dock-arrow next" type="button" onclick="stepScreen(1)">›</button>
+    </div>
+  </div>
+
+  <script>
+    const giftData = {
+      recipient: "Sakshi",
+      trait: "kind",
+      sender: "+55",
+      letter:
+        "Happy birthday! Thank you for bringing warmth, laughter, and calm into every room you walk into.\n\nMay this year bring you big adventures, peaceful mornings, and everything your heart has been quietly wishing for.",
+      loves: [
+        "Your contagious laugh that fixes any bad day",
+        "How fiercely and genuinely you care for your people",
+        "Your late-night deep conversations and random humor",
+        "The effortless kindness you show to everyone"
+      ],
+      wishes: [
+        "May your new year be full of bold dreams coming true ✨",
+        "Wishing you endless health, peace, and spontaneous trips 🌟",
+        "May you always feel as deeply loved as you make others feel 💫"
+      ]
+    };
+
+    if (location.hash.startsWith("#party=")) {
+  try {
+    const rawHash = decodeURIComponent(location.hash.slice(7));
+    const parsed = JSON.parse(decodeURIComponent(escape(atob(rawHash))));
+    Object.assign(state, parsed);
+  } catch (err) {
+    console.error("Invalid party hash:", err);
+  }
+}
+
+    let screen = 0;
+    let letterOpen = false;
+    let clawIndex = 0;
+    let wishIndex = -1;
+    let cakeAngle = 0;
+
+    const SCREEN_NAMES = ["Birthday cover", "The letter", "What I love", "Wishes"];
+    const CAPSULE_ICONS = ["💌", "🎂", "🎈", "🎁"];
+
+    function scatterConfetti(containerId) {
+      const box = document.getElementById(containerId);
+      const colors = ["#ff758f", "#ffd166", "#9bf6ff", "#bdb2ff", "#ffadad"];
+      box.innerHTML = "";
+      for (let i = 0; i < 16; i++) {
+        const dot = document.createElement("span");
+        dot.className = "confetti-dot";
+        dot.style.left = `${(i * 19 + 7) % 94}%`;
+        dot.style.top = `${(i * 23 + 5) % 88}%`;
+        dot.style.background = colors[i % colors.length];
+        dot.style.transform = `rotate(${i * 37}deg)`;
+        box.appendChild(dot);
+      }
+    }
+
+    function renderGift() {
+      const name = (giftData.recipient || "Friend").trim();
+      const sender = (giftData.sender || "Me").trim();
+      const trait = (giftData.trait || "wonderful").trim();
+
+      document.getElementById("prevName").textContent = name;
+      document.getElementById("prevTrait").textContent = trait;
+      document.getElementById("prevFromLine").textContent = `${sender} threw a little party just for you.`;
+      document.getElementById("prevDear").textContent = `Dear ${name},`;
+      document.getElementById("prevLetterBody").textContent = giftData.letter || "";
+      document.getElementById("prevSign").textContent = `With love, ${sender}`;
+
+      document.getElementById("letterSheet").classList.toggle("expanded", letterOpen);
+      document.getElementById("pullHintText").textContent = letterOpen ? "⌄ Tap to tuck back" : "⌃ Pull up to read";
+
+      const row = document.getElementById("capsuleRow");
+      const loves = Array.isArray(giftData.loves) && giftData.loves.length ? giftData.loves : ["You"];
+      row.innerHTML = loves
+        .map((_, idx) => `<div class="capsule ${idx === clawIndex ? "selected" : ""}">${CAPSULE_ICONS[idx % CAPSULE_ICONS.length]}</div>`)
+        .join("");
+
+      const positions = ["18%", "39%", "61%", "82%"];
+      document.getElementById("clawArm").style.left = positions[clawIndex] || "50%";
+    }
+
+    function goScreen(idx) {
+      screen = Math.max(0, Math.min(3, idx));
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`screen${i}`).style.display = i === screen ? "flex" : "none";
+      }
+      document.querySelectorAll(".dock-dot").forEach((dot) => {
+        dot.classList.toggle("active", Number(dot.dataset.dot) === screen);
+      });
+      document.getElementById("dockLabel").textContent = SCREEN_NAMES[screen];
+      document.getElementById("dockCount").textContent = `${screen + 1}/4`;
+    }
+
+    function stepScreen(delta) {
+      goScreen((screen + delta + 4) % 4);
+    }
+
+    function spinAndBlowCake() {
+      cakeAngle += 360;
+      document.getElementById("cakeWrap").style.transform = `rotateY(${cakeAngle}deg)`;
+      document.getElementById("cakeCandles").classList.toggle("blown");
+    }
+
+    function toggleLetter() {
+      letterOpen = !letterOpen;
+      renderGift();
+    }
+
+    function moveClaw(dir) {
+      const len = giftData.loves.length || 1;
+      clawIndex = (clawIndex + dir + len) % len;
+      renderGift();
+    }
+
+    function grabPrize() {
+      const arm = document.getElementById("clawArm");
+      arm.classList.add("dropping");
+      setTimeout(() => {
+        arm.classList.remove("dropping");
+        const prize = giftData.loves[clawIndex] || "You are amazing!";
+        document.getElementById("prizeBanner").textContent = `💖 ${prize}`;
+      }, 380);
+    }
+
+    function releaseWish() {
+      const wishes = Array.isArray(giftData.wishes) && giftData.wishes.length ? giftData.wishes : ["Happy Birthday ✨"];
+      wishIndex = (wishIndex + 1) % wishes.length;
+      document.getElementById("wishDisplay").textContent = wishes[wishIndex];
+    }
+
+    scatterConfetti("confetti0");
+    scatterConfetti("confetti1");
+    renderGift();
+    goScreen(0);
+  </script>
+</body>
+</html>

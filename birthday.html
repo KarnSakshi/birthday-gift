@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Party Surprise Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style >
+
+    .gift-link-bar {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  word-break: break-all;
+}
+
+.gift-link-bar a {
+  color: var(--rose);
+  font-weight: 700;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+    :root {
+      --cream: #fbf3ec;
+      --card: #ffffff;
+      --ink: #2b1d28;
+      --muted: #7a6874;
+      --rose: #d9264e;
+      --rose-soft: #fde8ee;
+      --pink-env: #f39ab6;
+      --pink-env-dark: #e4789c;
+      --border: #eedfe4;
+      --shadow: 0 18px 45px rgba(84, 34, 54, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    .serif {
+      font-family: "Playfair Display", Georgia, serif;
+    }
+
+    .hand {
+      font-family: "Caveat", cursive;
+    }
+
+    /* Main Split Layout */
+    .workspace {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      min-height: 100vh;
+    }
+
+    @media (max-width: 980px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left Builder Panel */
+    .builder {
+      padding: 36px 40px 48px;
+      background: linear-gradient(180deg, #fdf7f2 0%, #f9efe7 100%);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      overflow-y: auto;
+    }
+
+    .builder h1 {
+      margin: 0;
+      font-size: 2.15rem;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .builder-sub {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+      max-width: 48ch;
+    }
+
+    .section-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    .section-bar h2 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .link-btn {
+      background: none;
+      border: none;
+      color: var(--rose);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    /* Surprise Module Cards (Like 2luv Grid) */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(110px, 1fr));
+      gap: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .module-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .module-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 16px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      box-shadow: 0 6px 18px rgba(60, 20, 35, 0.03);
+    }
+
+    .module-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .module-card.active {
+      border-color: var(--rose);
+      background: #fff9fb;
+      box-shadow: 0 10px 24px rgba(217, 38, 78, 0.12);
+    }
+
+    .module-icon {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .module-title {
+      font-weight: 700;
+      font-size: 0.86rem;
+      display: block;
+    }
+
+    .module-meta {
+      font-size: 0.74rem;
+      color: var(--muted);
+      margin-top: 3px;
+      display: block;
+    }
+
+    .module-card.active .module-meta {
+      color: var(--rose);
+      font-weight: 600;
+    }
+
+    /* Form Editor Card */
+    .editor-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .editor-box h3 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font: inherit;
+      color: var(--ink);
+      background: #fffdfb;
+    }
+
+    input:focus, textarea:focus {
+      outline: 2px solid rgba(217, 38, 78, 0.25);
+      border-color: var(--rose);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .chip-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .chip-row {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .point-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.remove-point-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--muted);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.remove-point-btn:hover {
+  border-color: var(--rose);
+  color: var(--rose);
+  background: #fff6f8;
+}
+
+.add-more-btn {
+  align-self: flex-start;
+  margin-top: 4px;
+  border: 1.5px dashed var(--rose);
+  background: #fff8fa;
+  color: var(--rose);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+    .btn-pill {
+      border: none;
+      border-radius: 999px;
+      padding: 11px 20px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s ease;
+    }
+
+    .btn-pill:active {
+      transform: scale(0.97);
+    }
+
+    .btn-rose {
+      background: var(--rose);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(217, 38, 78, 0.28);
+    }
+
+    .btn-ghost {
+      background: #fff;
+      color: var(--ink);
+      border: 1px solid var(--border);
+    }
+
+    .bottom-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      margin-top: auto;
+    }
+
+
+
+    /* Right Phone Stage */
+    .stage {
+      background: radial-gradient(circle at center, #fce7ec 0%, #fbf2ea 68%);
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .top-pill {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    /* 393x852 Style Mobile Frame */
+    .phone-frame {
+      width: 365px;
+      height: 740px;
+      border-radius: 46px;
+      border: 9px solid #e6dcd8;
+      background: #fff8f5;
+      box-shadow: 0 28px 70px rgba(74, 28, 46, 0.16);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .phone-screen {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 22px 20px 84px;
+    }
+
+    /* Floating Confetti Bits */
+    .confetti-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .confetti-dot {
+      position: absolute;
+      width: 9px;
+      height: 5px;
+      border-radius: 3px;
+      opacity: 0.75;
+    }
+
+    /* SCREEN 0: Birthday Cover Page */
+    .screen-cover {
+      background: linear-gradient(180deg, #fff6ef 0%, #fde6ec 100%);
+      text-align: center;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .kicker {
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      font-weight: 800;
+      color: var(--rose);
+      text-transform: uppercase;
+      margin-top: 10px;
+    }
+
+    .cover-title {
+      font-size: 2rem;
+      line-height: 1.08;
+      margin: 6px 0 4px;
+    }
+
+    .cover-title span {
+      color: var(--rose);
+    }
+
+    .cover-trait {
+      font-size: 1.55rem;
+      margin: 0;
+      color: #4f3a47;
+    }
+
+    .cover-trait mark {
+      background: linear-gradient(120deg, #ffe29a 0%, #ffc2d4 100%);
+      padding: 0 6px;
+      border-radius: 6px;
+      color: var(--rose);
+    }
+
+    .cover-from {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* Illustrated Layered Cake */
+    .cake-wrap {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.35s ease;
+    }
+
+    .candles {
+      display: flex;
+      gap: 14px;
+      margin-bottom: -4px;
+      z-index: 3;
+    }
+
+    .candle {
+      width: 8px;
+      height: 30px;
+      border-radius: 4px;
+      background: repeating-linear-gradient(45deg, #fff, #fff 4px, #ff8fab 4px, #ff8fab 8px);
+      position: relative;
+    }
+
+    .flame {
+      width: 10px;
+      height: 14px;
+      background: radial-gradient(circle at 50% 70%, #fff3b0, #ff9f1c 65%, #ff5400);
+      border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+      position: absolute;
+      top: -15px;
+      left: -1px;
+      animation: flicker 0.9s infinite alternate;
+    }
+
+    .candles.blown .flame {
+      opacity: 0;
+      transform: scale(0.2);
+      transition: 0.3s;
+    }
+
+    @keyframes flicker {
+      from { transform: scale(0.95) rotate(-3deg); }
+      to { transform: scale(1.06) rotate(3deg); }
+    }
+
+    .cake-top {
+      width: 136px;
+      height: 46px;
+      background: linear-gradient(180deg, #ffb5c8, #ff8fab);
+      border-radius: 16px 16px 6px 6px;
+      border-top: 7px solid #fff5f8;
+      box-shadow: inset 0 -6px 0 rgba(217, 38, 78, 0.14);
+      z-index: 2;
+    }
+
+    .cake-bottom {
+      width: 176px;
+      height: 54px;
+      background: linear-gradient(180deg, #d8bbff, #b892ff);
+      border-radius: 12px 12px 10px 10px;
+      border-top: 7px solid #f7efff;
+      box-shadow: 0 10px 18px rgba(96, 56, 130, 0.16);
+    }
+
+    .cake-stand {
+      width: 205px;
+      height: 12px;
+      background: #fff;
+      border-radius: 999px;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+    }
+
+    .cake-pedestal {
+      width: 54px;
+      height: 22px;
+      background: linear-gradient(180deg, #f3ece9, #fff);
+      border-radius: 0 0 14px 14px;
+    }
+
+    .spin-pill {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* SCREEN 1: Pink Wax-Seal Envelope + Letter */
+    .screen-letter {
+      background: linear-gradient(180deg, #fbd2df 0%, #fff6f2 55%, #f9c8d8 100%);
+      justify-content: flex-end;
+      padding-bottom: 72px;
+    }
+
+    .letter-sheet {
+      background: #fffdf9;
+      border-radius: 22px 22px 12px 12px;
+      padding: 20px 20px 95px;
+      box-shadow: 0 -8px 30px rgba(130, 42, 74, 0.12);
+      border: 1px solid #f2e4e8;
+      transform: translateY(115px);
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      z-index: 2;
+      max-height: 510px;
+      overflow-y: auto;
+    }
+
+    .letter-sheet.expanded {
+      transform: translateY(0);
+    }
+
+    .letter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .letter-body {
+      font-size: 1.48rem;
+      line-height: 1.38;
+      color: var(--rose);
+      white-space: pre-line;
+      margin: 8px 0 14px;
+    }
+
+    .letter-sign {
+      text-align: right;
+      font-size: 1.45rem;
+      color: var(--rose);
+    }
+
+    .envelope-pocket {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 66px;
+      height: 195px;
+      background: linear-gradient(180deg, var(--pink-env) 0%, var(--pink-env-dark) 100%);
+      border-radius: 0 0 26px 26px;
+      clip-path: polygon(0 0, 50% 34%, 100% 0, 100% 100%, 0 100%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 14px;
+      box-shadow: 0 14px 30px rgba(182, 65, 105, 0.28);
+      cursor: pointer;
+    }
+
+    .wax-seal {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #b8293d, #731120);
+      color: #f4a4b4;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      box-shadow: 0 6px 14px rgba(74, 8, 18, 0.45);
+      margin-bottom: 24px;
+    }
+
+    .pull-hint {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: #6f1936;
+      text-transform: uppercase;
+    }
+
+    /* SCREEN 2: What I Love Claw Machine */
+    .screen-claw {
+      background: linear-gradient(180deg, #e7d9f7 0%, #f9ebf2 100%);
+      align-items: center;
+      gap: 10px;
+    }
+
+    .title-pill {
+      background: #fff;
+      padding: 9px 18px;
+      border-radius: 999px;
+      width: 100%;
+      font-size: 1.15rem;
+      font-weight: 800;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+    }
+
+    .claw-cabinet {
+      width: 100%;
+      background: linear-gradient(180deg, #f8a5c2, #f38bb0);
+      border-radius: 26px;
+      padding: 12px;
+      box-shadow: 0 14px 28px rgba(150, 62, 102, 0.18);
+    }
+
+    .claw-marquee {
+      background: #b993e8;
+      color: #fff;
+      border-radius: 16px 16px 8px 8px;
+      padding: 6px;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .claw-marquee span {
+      background: #fff;
+      color: var(--rose);
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 3px 12px;
+      border-radius: 999px;
+    }
+
+    .claw-glass {
+      height: 245px;
+      background: radial-gradient(circle at top, #fff7fc, #f4e6fa);
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+      border: 3px solid #fff;
+    }
+
+    .claw-arm {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: left 0.25s ease, top 0.35s ease;
+      text-align: center;
+    }
+
+    .claw-rod {
+      width: 6px;
+      height: 36px;
+      background: #d0c4dc;
+      margin: 0 auto;
+      transition: height 0.35s ease;
+    }
+
+    .claw-arm.dropping .claw-rod {
+      height: 118px;
+    }
+
+    .claw-head {
+      background: #f4729b;
+      color: #fff;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .capsules {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+    }
+
+    .capsule {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.92) 50%, #ffb3c6 50%);
+      border: 2px solid #fff;
+      display: grid;
+      place-items: center;
+      font-size: 1.25rem;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s ease;
+    }
+
+    .capsule.selected {
+      transform: scale(1.14);
+      outline: 3px solid var(--rose);
+    }
+
+    .claw-controls {
+      margin-top: 10px;
+      background: #fff7fa;
+      border-radius: 18px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .joy-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .joy-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .grab-btn {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      border: 4px solid #f9c5d5;
+      background: var(--rose);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.78rem;
+      cursor: pointer;
+      box-shadow: 0 8px 16px rgba(217, 38, 78, 0.3);
+    }
+
+    .prize-banner {
+      background: #fff;
+      border: 1.5px solid #f6c2d3;
+      border-radius: 16px;
+      padding: 10px 14px;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      min-height: 56px;
+      display: grid;
+      place-items: center;
+    }
+
+    /* SCREEN 3: Wishes Star Jar */
+    .screen-wishes {
+      background: linear-gradient(180deg, #fce7b2 0%, #fdf2e6 55%, #f9e1da 100%);
+      align-items: center;
+      text-align: center;
+      justify-content: space-between;
+    }
+
+    .jar-stage {
+      position: relative;
+      width: 240px;
+      height: 270px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .jar-cork {
+      width: 78px;
+      height: 26px;
+      background: linear-gradient(180deg, #d8a47f, #b97d56);
+      border-radius: 8px 8px 3px 3px;
+      z-index: 2;
+    }
+
+    .jar-ribbon {
+      width: 96px;
+      height: 12px;
+      background: #c59bf0;
+      border-radius: 999px;
+      margin-top: -2px;
+      z-index: 3;
+      box-shadow: 0 3px 8px rgba(130, 82, 180, 0.3);
+    }
+
+    .jar-body {
+      width: 168px;
+      height: 185px;
+      margin-top: -4px;
+      border-radius: 44px 44px 54px 54px;
+      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.9), rgba(255, 232, 179, 0.65));
+      border: 3px solid rgba(255, 255, 255, 0.92);
+      box-shadow: 0 18px 38px rgba(219, 165, 74, 0.25), inset 0 0 28px rgba(255, 224, 130, 0.7);
+      padding: 18px 14px;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-end;
+      justify-content: center;
+      gap: 6px;
+      font-size: 1.35rem;
+    }
+
+    .wish-card-pop {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid #f3d7b6;
+      border-radius: 16px;
+      padding: 12px 16px;
+      width: 100%;
+      box-shadow: 0 10px 24px rgba(173, 118, 42, 0.12);
+    }
+
+    /* Phone Bottom Stepper Bar (Like 2luv 1/4 bar) */
+    .phone-dock {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      background: #fff;
+      border-radius: 999px;
+      padding: 6px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 26px rgba(55, 20, 35, 0.12);
+      z-index: 10;
+    }
+
+    .dock-arrow {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: none;
+      background: #f5eff2;
+      color: var(--ink);
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .dock-arrow.next {
+      background: var(--rose);
+      color: #fff;
+    }
+
+    .dock-center {
+      text-align: center;
+    }
+
+    .dock-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      display: block;
+    }
+
+    .dock-dots {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      margin-top: 3px;
+    }
+
+    .dock-dot {
+      width: 6px;
+      height: 5px;
+      border-radius: 999px;
+      background: #e2cfd6;
+      transition: all 0.2s ease;
+    }
+
+    .dock-dot.active {
+      width: 18px;
+      background: var(--rose);
+    }
+
+    .preview-tag {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: var(--muted);
+      background: #fff;
+      padding: 5px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="workspace">
+    <!-- LEFT: Builder Controls -->
+    <section class="builder">
+      <div>
+        <h1 class="serif">Fill the party with surprises</h1>
+        <p class="builder-sub">Customize the opening birthday cover, wax-sealed letter, Love Prizes claw machine, and Star Jar wishes.</p>
+      </div>
+
+      <div class="section-bar">
+        <h2>The surprises for <span id="builderRecipientTitle">Sakshi</span></h2>
+        <button class="link-btn" type="button" onclick="goScreen(1)">Jump to the letter</button>
+      </div>
+
+      <div class="module-grid">
+        <div class="module-card active" data-screen="0" onclick="goScreen(0)">
+          <span class="module-icon">🎂</span>
+          <span class="module-title">Cover Page</span>
+          <span class="module-meta">Open my gift</span>
+        </div>
+        <div class="module-card" data-screen="1" onclick="goScreen(1)">
+          <span class="module-icon">💌</span>
+          <span class="module-title">The letter</span>
+          <span class="module-meta">Required</span>
+        </div>
+        <div class="module-card" data-screen="2" onclick="goScreen(2)">
+          <span class="module-icon">🕹️</span>
+          <span class="module-title">What I love</span>
+          <span class="module-meta" id="loveCountMeta">4 prizes</span>
+        </div>
+        <div class="module-card" data-screen="3" onclick="goScreen(3)">
+          <span class="module-icon">✨</span>
+          <span class="module-title">Wishes</span>
+          <span class="module-meta" id="wishCountMeta">3 star wishes</span>
+        </div>
+      </div>
+
+      <!-- Dynamic Form Based on Active Module -->
+      <div class="editor-box" id="editorPanel"></div>
+
+      <!-- 1. Link preview bar -->
+      <div class="gift-link-bar">
+  <span id="giftLinkText">gift.html link ready...</span>
+  <a id="openGiftLink" href="gift.html" target="_blank">Open gift.html ↗</a>
+</div>
+
+      <div class="bottom-nav">
+        <button class="btn-pill btn-ghost" type="button" onclick="stepScreen(-1)">← Back</button>
+        <button class="btn-pill btn-rose" type="button" id="copyShareBtn">Copy Share Link</button>
+        <button class="btn-pill btn-rose" type="button" onclick="stepScreen(1)">Next →</button>
+      </div>
+    </section>
+
+    <!-- RIGHT: Mobile Preview (393x852 Style) -->
+    <section class="stage">
+      <div class="top-pill">
+        <span>🎂 Birthday party</span>
+        <span style="color: var(--rose); font-size: 0.82rem;">Live Phone Preview</span>
+      </div>
+
+      <div class="phone-frame">
+        <!-- SCREEN 0: Birthday Cover -->
+        <div class="phone-screen screen-cover" id="screen0">
+          <div class="confetti-layer" id="confetti0"></div>
+          <div>
+            <div class="kicker">A GIFT FOR YOU</div>
+            <h2 class="serif cover-title">Happy birthday,<br><span id="prevName">Sakshi</span>!</h2>
+            <p class="hand cover-trait">for being so <mark id="prevTrait">kind</mark></p>
+            <div class="cover-from" id="prevFromLine">+55 threw a little party just for you.</div>
+          </div>
+
+          <div class="cake-wrap" id="cakeWrap" onclick="spinAndBlowCake()" title="Tap to spin or blow candles">
+            <div class="candles" id="cakeCandles">
+              <div class="candle"><div class="flame"></div></div>
+              <div class="candle"><div class="flame"></div></div>
+              <div class="candle"><div class="flame"></div></div>
+              <div class="candle"><div class="flame"></div></div>
+            </div>
+            <div class="cake-top"></div>
+            <div class="cake-bottom"></div>
+            <div class="cake-stand"></div>
+            <div class="cake-pedestal"></div>
+          </div>
+
+          <div class="spin-pill" onclick="spinAndBlowCake()" style="cursor:pointer;">
+            <span>‹ › Tap cake to spin & blow candles</span>
+          </div>
+
+          <button class="btn-pill btn-rose" type="button" style="width: 82%; padding: 14px;" onclick="goScreen(1)">
+            🎁 Open my gift
+          </button>
+        </div>
+
+        <!-- SCREEN 1: Wax Seal Envelope & Letter -->
+        <div class="phone-screen screen-letter" id="screen1" style="display:none;">
+          <div class="confetti-layer" id="confetti1"></div>
+
+          <div class="letter-sheet" id="letterSheet">
+            <div class="letter-header">
+              <div>
+                <div style="font-size:0.65rem; font-weight:800; letter-spacing:0.1em; color:var(--rose);">OPEN THE ENVELOPE</div>
+                <strong class="serif" style="font-size:1.25rem;">A letter for you</strong>
+              </div>
+              <button class="dock-arrow" type="button" onclick="toggleLetter()" title="Expand/Collapse">⌃</button>
+            </div>
+            <div class="hand" style="font-size:1.55rem; color:var(--rose);" id="prevDear">Dear Sakshi,</div>
+            <div class="hand letter-body" id="prevLetterBody"></div>
+            <div class="hand letter-sign" id="prevSign">With love, +55</div>
+          </div>
+
+          <div class="envelope-pocket" onclick="toggleLetter()">
+            <div class="wax-seal">♥</div>
+            <div class="pull-hint" id="pullHintText">⌃ Pull up to read</div>
+          </div>
+        </div>
+
+        <!-- SCREEN 2: What I Love Claw Machine -->
+        <div class="phone-screen screen-claw" id="screen2" style="display:none;">
+          <div class="title-pill serif">What I love about you</div>
+
+          <div class="claw-cabinet">
+            <div class="claw-marquee"><span>♥ Love prizes ♥</span></div>
+            <div class="claw-glass">
+              <div class="claw-arm" id="clawArm" style="left: 20%;">
+                <div class="claw-rod"></div>
+                <div class="claw-head">♥</div>
+              </div>
+              <div class="capsules" id="capsuleRow"></div>
+            </div>
+
+            <div class="claw-controls">
+              <div class="joy-btns">
+                <button class="joy-btn" type="button" onclick="moveClaw(-1)">◀</button>
+                <button class="joy-btn" type="button" onclick="moveClaw(1)">▶</button>
+              </div>
+              <span class="hand" style="font-size:1.1rem; color:var(--muted);">Move & press Grab</span>
+              <button class="grab-btn" type="button" onclick="grabPrize()">GRAB</button>
+            </div>
+          </div>
+
+          <div class="prize-banner" id="prizeBanner">
+            Move the claw over a capsule and hit <strong>GRAB</strong>!
+          </div>
+        </div>
+
+        <!-- SCREEN 3: Wishes Star Jar -->
+        <div class="phone-screen screen-wishes" id="screen3" style="display:none;">
+          <div>
+            <div class="kicker">MAKE A WISH</div>
+            <h2 class="serif" style="font-size:1.75rem; margin:4px 0;">Wishes for your new year</h2>
+          </div>
+
+          <div class="jar-stage" onclick="releaseWish()">
+            <div class="jar-cork"></div>
+            <div class="jar-ribbon"></div>
+            <div class="jar-body">
+              <span>⭐</span><span>🌟</span><span>✨</span><span>💫</span>
+              <span>⭐</span><span>✨</span><span>🌟</span><span>⭐</span>
+              <span>💫</span><span>⭐</span><span>✨</span><span>🌟</span>
+            </div>
+          </div>
+
+          <div class="wish-card-pop">
+            <p class="hand" id="wishDisplay" style="font-size:1.45rem; color:var(--rose); margin:0;">
+              Your wishes will rise from this jar.
+            </p>
+          </div>
+
+          <button class="btn-pill btn-rose" type="button" onclick="releaseWish()">✨ Release a star wish</button>
+        </div>
+
+        <!-- Shared Bottom Navigation Bar -->
+        <div class="phone-dock">
+          <button class="dock-arrow" type="button" onclick="stepScreen(-1)">‹</button>
+          <div class="dock-center">
+            <span class="dock-label" id="dockLabel">Birthday cover</span>
+            <div class="dock-dots">
+              <span class="dock-dot active" data-dot="0"></span>
+              <span class="dock-dot" data-dot="1"></span>
+              <span class="dock-dot" data-dot="2"></span>
+              <span class="dock-dot" data-dot="3"></span>
+            </div>
+          </div>
+          <span style="font-size:0.75rem; font-weight:700; color:var(--muted);" id="dockCount">1/4</span>
+          <button class="dock-arrow next" type="button" onclick="stepScreen(1)">›</button>
+        </div>
+      </div>
+
+      <div class="preview-tag">MOBILE PREVIEW • 393×852</div>
+    </section>
+  </div>
+
+  <script>
+    const state = {
+      screen: 0,
+      recipient: "Sakshi",
+      trait: "kind",
+      sender: "+55",
+      letter:
+        "Happy birthday! Thank you for bringing warmth, laughter, and calm into every room you walk into.\n\nMay this year bring you big adventures, peaceful mornings, and everything your heart has been quietly wishing for.",
+      letterOpen: false,
+      clawIndex: 0,
+      wishIndex: -1,
+      loves: [
+        "Your contagious laugh that fixes any bad day",
+        "How fiercely and genuinely you care for your people",
+        "Your late-night deep conversations and random humor",
+        "The effortless kindness you show to everyone"
+      ],
+      wishes: [
+        "May your new year be full of bold dreams coming true ✨",
+        "Wishing you endless health, peace, and spontaneous trips 🌟",
+        "May you always feel as deeply loved as you make others feel 💫"
+      ]
+    };
+
+    const SCREEN_NAMES = ["Birthday cover", "The letter", "What I love", "Wishes"];
+    const CAPSULE_ICONS = ["💌", "🎂", "🎈", "🎁"];
+
+    function scatterConfetti(containerId) {
+      const box = document.getElementById(containerId);
+      const colors = ["#ff758f", "#ffd166", "#9bf6ff", "#bdb2ff", "#ffadad"];
+      box.innerHTML = "";
+      for (let i = 0; i < 16; i++) {
+        const dot = document.createElement("span");
+        dot.className = "confetti-dot";
+        dot.style.left = `${(i * 19 + 7) % 94}%`;
+        dot.style.top = `${(i * 23 + 5) % 88}%`;
+        dot.style.background = colors[i % colors.length];
+        dot.style.transform = `rotate(${i * 37}deg)`;
+        box.appendChild(dot);
+      }
+    }
+
+    // 2. Build gift.html URL with encoded state
+function buildGiftUrl() {
+  const payload = {
+    recipient: state.recipient,
+    trait: state.trait,
+    sender: state.sender,
+    letter: state.letter,
+    loves: state.loves,
+    wishes: state.wishes
+  };
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+  const basePath = location.pathname.replace(/[^/]*$/, "");
+  return `${location.origin}${basePath}gift.html#party=${encodeURIComponent(encoded)}`;
+}
+
+// 3. Keep visible link & anchor href in sync
+function updateGiftLinkUI() {
+  const url = buildGiftUrl();
+  document.getElementById("giftLinkText").textContent = url;
+  document.getElementById("openGiftLink").href = url;
+}
+
+// 4. Copy the gift.html link on button click
+document.getElementById("copyShareBtn").addEventListener("click", async () => {
+  const url = buildGiftUrl();
+  updateGiftLinkUI();
+  await navigator.clipboard.writeText(url);
+});
+
+    function goScreen(idx) {
+      state.screen = Math.max(0, Math.min(3, idx));
+
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`screen${i}`).style.display = i === state.screen ? "flex" : "none";
+      }
+
+      document.querySelectorAll(".module-card").forEach((card) => {
+        card.classList.toggle("active", Number(card.dataset.screen) === state.screen);
+      });
+
+      document.querySelectorAll(".dock-dot").forEach((dot) => {
+        dot.classList.toggle("active", Number(dot.dataset.dot) === state.screen);
+      });
+
+      document.getElementById("dockLabel").textContent = SCREEN_NAMES[state.screen];
+      document.getElementById("dockCount").textContent = `${state.screen + 1}/4`;
+
+      renderEditorPanel();
+      renderPreview();
+    }
+
+    function stepScreen(delta) {
+      goScreen((state.screen + delta + 4) % 4);
+    }
+
+    function renderEditorPanel() {
+      const panel = document.getElementById("editorPanel");
+
+      if (state.screen === 0) {
+        panel.innerHTML = `
+          <h3>1. Birthday Cover Page ("Open my gift")</h3>
+          <div class="grid-2">
+            <div class="field">
+              <label>Birthday Person's Name</label>
+              <input value="${escapeHtml(state.recipient)}" oninput="updateField('recipient', this.value)" />
+            </div>
+            <div class="field">
+              <label>Signature Word ("for being so...")</label>
+              <input value="${escapeHtml(state.trait)}" oninput="updateField('trait', this.value)" />
+            </div>
+          </div>
+          <div class="field">
+            <label>From / Party Host Name</label>
+            <input value="${escapeHtml(state.sender)}" oninput="updateField('sender', this.value)" />
+          </div>
+        `;
+      } else if (state.screen === 1) {
+        panel.innerHTML = `
+          <h3>2. The Wax-Seal Letter</h3>
+          <div class="field">
+            <label>Your Birthday Letter</label>
+            <textarea oninput="updateField('letter', this.value)">${escapeHtml(state.letter)}</textarea>
+          </div>
+          <button class="btn-pill btn-ghost" type="button" onclick="toggleLetter()">
+            ${state.letterOpen ? "Tuck Letter Back Into Envelope" : "Pull Up Letter in Preview"}
+          </button>
+        `;
+      } else if (state.screen === 2) {
+  panel.innerHTML = `
+    <h3>3. "What I Love About You" Capsules</h3>
+    <div class="chip-list">
+      ${state.loves
+        .map(
+          (item, i) => `
+        <div class="point-row">
+          <input value="${escapeHtml(item)}" oninput="updateList('loves', ${i}, this.value)" />
+          <button class="remove-point-btn" type="button" title="Remove" onclick="removeListPoint('loves', ${i})">✕</button>
+        </div>`
+        )
+        .join("")}
+    </div>
+    <button class="add-more-btn" type="button" onclick="addListPoint('loves')">+ Add more</button>
+  `;
+} else {
+  panel.innerHTML = `
+    <h3>4. "Wishes for Your New Year" Star Jar</h3>
+    <div class="chip-list">
+      ${state.wishes
+        .map(
+          (item, i) => `
+        <div class="point-row">
+          <input value="${escapeHtml(item)}" oninput="updateList('wishes', ${i}, this.value)" />
+          <button class="remove-point-btn" type="button" title="Remove" onclick="removeListPoint('wishes', ${i})">✕</button>
+        </div>`
+        )
+        .join("")}
+    </div>
+    <button class="add-more-btn" type="button" onclick="addListPoint('wishes')">+ Add more</button>
+  `;
+}
+}
+    function addListPoint(listKey) {
+  state[listKey].push("");
+  if (typeof updateGiftLinkUI === "function") updateGiftLinkUI();
+  renderEditorPanel();
+  renderPreview();
+}
+
+function removeListPoint(listKey, index) {
+  if (state[listKey].length <= 1) return;
+  state[listKey].splice(index, 1);
+  if (state.clawIndex >= state.loves.length) state.clawIndex = 0;
+  if (state.wishIndex >= state.wishes.length) state.wishIndex = -1;
+  if (typeof updateGiftLinkUI === "function") updateGiftLinkUI();
+  renderEditorPanel();
+  renderPreview();
+}
+
+    function updateField(key, val) {
+  state[key] = val;
+  renderPreview();
+  if (typeof updateGiftLinkUI === "function") updateGiftLinkUI();
+}
+
+function updateList(listKey, index, val) {
+  state[listKey][index] = val;
+  renderPreview();
+  if (typeof updateGiftLinkUI === "function") updateGiftLinkUI();
+}
+
+    function renderPreview() {
+      const name = state.recipient.trim() || "Friend";
+      const sender = state.sender.trim() || "Me";
+      const trait = state.trait.trim() || "wonderful";
+
+      document.getElementById("builderRecipientTitle").textContent = name;
+      document.getElementById("prevName").textContent = name;
+      document.getElementById("prevTrait").textContent = trait;
+      document.getElementById("prevFromLine").textContent = `${sender} threw a little party just for you.`;
+
+      document.getElementById("prevDear").textContent = `Dear ${name},`;
+      document.getElementById("prevLetterBody").textContent = state.letter;
+      document.getElementById("prevSign").textContent = `With love, ${sender}`;
+
+      const sheet = document.getElementById("letterSheet");
+      sheet.classList.toggle("expanded", state.letterOpen);
+      document.getElementById("pullHintText").textContent = state.letterOpen
+        ? "⌄ Tap to tuck back"
+        : "⌃ Pull up to read";
+
+        
+      // Claw capsules
+     const row = document.getElementById("capsuleRow");
+const lovesList = state.loves.length ? state.loves : ["You"];
+row.innerHTML = lovesList
+  .map(
+    (_, idx) => `
+  <div class="capsule ${idx === state.clawIndex ? "selected" : ""}">
+    ${CAPSULE_ICONS[idx % CAPSULE_ICONS.length]}
+  </div>`
+  )
+  .join("");
+
+const clawArm = document.getElementById("clawArm");
+if (lovesList.length === 1) {
+  clawArm.style.left = "50%";
+} else {
+  const pct = 14 + (state.clawIndex / (lovesList.length - 1)) * 72;
+  clawArm.style.left = `${pct}%`;
+}
+
+    }
+
+    let cakeAngle = 0;
+    function spinAndBlowCake() {
+      cakeAngle += 360;
+      const cake = document.getElementById("cakeWrap");
+      cake.style.transform = `rotateY(${cakeAngle}deg)`;
+      document.getElementById("cakeCandles").classList.toggle("blown");
+    }
+
+    function toggleLetter() {
+      state.letterOpen = !state.letterOpen;
+      renderPreview();
+      if (state.screen === 1) renderEditorPanel();
+    }
+
+    function moveClaw(dir) {
+      state.clawIndex = (state.clawIndex + dir + state.loves.length) % state.loves.length;
+      renderPreview();
+    }
+
+    function grabPrize() {
+      const arm = document.getElementById("clawArm");
+      arm.classList.add("dropping");
+      setTimeout(() => {
+        arm.classList.remove("dropping");
+        const prize = state.loves[state.clawIndex] || "You are amazing!";
+        document.getElementById("prizeBanner").innerHTML = `💖 <span>${escapeHtml(prize)}</span>`;
+      }, 380);
+    }
+
+    function releaseWish() {
+      state.wishIndex = (state.wishIndex + 1) % state.wishes.length;
+      document.getElementById("wishDisplay").textContent = state.wishes[state.wishIndex];
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    document.getElementById("copyShareBtn").addEventListener("click", async () => {
+      const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+      const url = `${location.origin}${location.pathname}#party=${encoded}`;
+      try {
+        await navigator.clipboard.writeText(url);
+        document.getElementById("copyShareBtn").textContent = "Copied!";
+        setTimeout(() => {
+          document.getElementById("copyShareBtn").textContent = "Copy Share Link";
+        }, 1800);
+      } catch {
+        alert(url);
+      }
+    });
+
+    if (location.hash.startsWith("#party=")) {
+      try {
+        const parsed = JSON.parse(decodeURIComponent(escape(atob(location.hash.slice(7)))));
+        Object.assign(state, parsed);
+      } catch {}
+    }
+
+    scatterConfetti("confetti0");
+    scatterConfetti("confetti1");
+    goScreen(0);
+  </script>
+</body>
+</html>
